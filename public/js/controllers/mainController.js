@@ -17,13 +17,12 @@ userMean.controller('mainController', ['$rootScope', 'Auth', '$location', functi
   self.doLogin = function() {
     self.processing = true;
     self.error = '';
-
     Auth.login(self.loginData.username, self.loginData.password)
       .success(function(data) {
         self.processing = false;
 
         Auth.getUser()
-          .thn(function(data) {
+          .then(function(data) {
             self.user = data.data;
           });
 

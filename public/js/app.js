@@ -1,12 +1,21 @@
-var userMean = angular.module('userMean', ['ngRoute', 'authService']);
+var userMean = angular.module('userMean', ['ngRoute', 'authService', 'userService']);
 
-userMean.config(['$routeProvider',
-  function($routeProvider) {
+userMean.config(['$routeProvider', '$httpProvider',
+  function($routeProvider, $httpProvider) {
 
     $routeProvider
       .when('/', {
-        // controller: 'mainController',
-        templateUrl: 'views/home.html'
+        templateUrl: 'views/home.html',
+        controller: 'mainController',
+        controllerAs: 'main'
       })
+      .when('/login', {
+        templateUrl: 'views/login.html'
+      })
+      .when('/signup', {
+        templateUrl: 'views/signup.html'
+      })
+
+    $httpProvider.interceptors.push('AuthInteceptor');
   }
 ]);
