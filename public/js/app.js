@@ -1,4 +1,4 @@
-var userMean = angular.module('userMean', ['ngRoute', 'authService', 'userService']);
+var userMean = angular.module('userMean', ['ngRoute', 'authService', 'userService', 'storyService']);
 
 userMean.config(['$routeProvider', '$httpProvider',
   function($routeProvider, $httpProvider) {

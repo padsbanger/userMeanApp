@@ -4,7 +4,6 @@ var morgan = require('morgan');
 var config = require('./config');
 var mongoose = require('mongoose');
 
-
 mongoose.connect(config.database, function(err) {
   if(!err) {
     console.log('connected');
@@ -16,7 +15,13 @@ mongoose.connect(config.database, function(err) {
 
 var app = express();
 
-var api = require('./routes/api')(app, express);
+var http = require('http').Server(app);
+
+var io = require('socket.io')(http);
+
+var api = require('./routes/api')(app, express, io);
+
+
 
 app.use(bodyParser.urlencoded({
   extended: false
@@ -34,6 +39,6 @@ app.get('*', function(req, res) {
 });
 
 
-app.listen(config.port, function() {
+http.listen(config.port, function() {
   console.log('Running on port ' + config.port);
 });

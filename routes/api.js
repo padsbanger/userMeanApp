@@ -17,8 +17,18 @@ function createToken(user) {
   return token
 };
 
-module.exports = function(app, express) {
+module.exports = function(app, express, io) {
   var api = express.Router();
+
+  api.get('/all', function(req, res) {
+    Story.find({}, function(err, stories) {
+      if(err) {
+        res.send(err);
+        return
+      }
+      res.json(stories);
+    })
+  });
 
   api.post('/signup', function(req, res) {
 
@@ -107,18 +117,19 @@ module.exports = function(app, express) {
     }
   })
 
-  api.route('')
+  api.route('/')
     .post(function(req, res){
       var story = new Story({
         creator: req.decoded.id,
         content: req.body.content
       });
 
-      story.save(function(err) {
+      story.save(function(err, newStory) {
         if(err) {
           res.send(err);
           return;
         }
+        io.emit('story', newStory);
         res.json({message: "New story created"});
       })
 
